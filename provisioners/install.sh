@@ -9,7 +9,7 @@ amazon-linux-extras install -y epel
 # miscellaneous dependencies for R and common packages
 yum install -y gcc gcc-gfortran gcc-c++ java-devel libcurl-devel readline-devel pcre-devel \
 	bzip2-devel libpng-devel cairo-devel pango-devel libxml2-devel openssl-devel openblas-devel \
-	postgresql-devel zeromq-devel
+	postgresql-devel zeromq-devel git
 
 # pandoc (for R Markdown)
 cd /tmp
