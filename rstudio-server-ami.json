@@ -1,0 +1,71 @@
+{
+  "variables": {
+    "aws_access_key": "{{ env `AWS_ACCESS_KEY_ID` }}",
+    "aws_secret_key": "{{ env `AWS_SECRET_ACCESS_KEY` }}",
+    "aws_region": "us-east-1",
+    "instance_type": "t2.small",
+    "subnet_id": null,
+    "ssh_keypair_name": null,
+    "ssh_private_key_file": null
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{ user `aws_access_key` }}",
+      "secret_key": "{{ user `aws_secret_key` }}",
+      "ami_name": "rstudio-server-{{ timestamp }}",
+      "instance_type": "{{ user `instance_type` }}",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "name": "amzn2-ami-hvm-2.0.*-x86_64-ebs",
+          "root-device-type": "ebs"
+        },
+        "owners": ["amazon"],
+        "most_recent": true
+      },
+      "region": "{{ user `aws_region` }}",
+      "ssh_keypair_name": "{{ user `ssh_keypair_name` }}",
+      "ssh_private_key_file": "{{ user `ssh_private_key_file` }}",
+      "ssh_username": "ec2-user",
+      "subnet_id": "{{ user `subnet_id` }}",
+      "tags": {
+        "OS_Version": "Amazon Linux 2",
+        "Name": "rstudio-server-{{ timestamp }}",
+        "Builder": "Packer",
+        "SourceAMI": "{{ .SourceAMI }}",
+        "Region": "{{ .BuildRegion }}"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done"
+    },
+    {
+      "type": "shell",
+      "execute_command": "{{ .Vars }} sudo -S -E bash '{{ .Path }}'",
+      "script": "./provisioners/install.sh"
+    },
+    {
+      "type": "file",
+      "source": "provisioners/rstudio-home",
+      "destination": "/tmp"
+    },
+    {
+      "type": "file",
+      "source": "provisioners/set_rstudio_passwd.sh",
+      "destination": "/tmp/"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo mv /tmp/rstudio-home/{Welcome.R,rstudio} /home/rstudio",
+        "sudo mv /home/rstudio/{,.}rstudio",
+        "sudo chown -R rstudio:rstudio /home/rstudio/.rstudio /home/rstudio/Welcome.R",
+        "sudo mv /tmp/set_rstudio_passwd.sh /var/lib/cloud/scripts/per-instance/"
+      ]
+    }
+  ]
+}
