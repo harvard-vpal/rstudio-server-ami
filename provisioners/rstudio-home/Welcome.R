@@ -4,10 +4,10 @@ pwd1 <- readline("Current password: ")
 pwd2 <- readline("New password: ")
 
 system(
-	paste(
-		"echo \"", pwd1, "\n", pwd2, "\n", pwd2, "\n\" | passwd",
-		sep = ""
-	)
+  paste(
+    "echo \"", pwd1, "\n", pwd2, "\n", pwd2, "\n\" | passwd",
+    sep = ""
+  )
 )
 
 rm(pwd1, pwd2)

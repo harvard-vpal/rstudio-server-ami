@@ -19,11 +19,11 @@ To build:
 
 ```sh
 packer build \
-    -var 'subnet_id=subnet-abcd0123' \
-    -var 'ssh_keypair_name=foo' \
-    -var 'ssh_private_key_file=~/.ssh/foo.pem' \
-    -var 'instance_type=t2.small' \
-    rstudio-server-ami.json
+  -var 'subnet_id=subnet-abcd0123' \
+  -var 'ssh_keypair_name=foo' \
+  -var 'ssh_private_key_file=~/.ssh/foo.pem' \
+  -var 'instance_type=t2.small' \
+  rstudio-server-ami.json
 ```
 
 ## Launching instances with the AMI
