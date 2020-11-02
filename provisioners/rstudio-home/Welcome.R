@@ -15,4 +15,3 @@ rm(pwd1, pwd2)
 # WARNING: it is strongly recommended that you clear the console so
 # that the password is not visible.  Either press Ctrl+L or go
 # to Edit -> Clear Console within the RStudio interface above.\n")
-
