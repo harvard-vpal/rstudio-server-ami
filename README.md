@@ -1,6 +1,6 @@
 # RStudio Server AMI
 
-This Packer template builds an Amazon Machine Image based on the latest Amazon Linux 2 distribution and includes the following dpendencies for R and some commonly-installed packages:
+This Packer template builds an Amazon Machine Image based on the latest Amazon Linux 2 distribution and includes the following dependencies for R and some commonly-installed packages:
 
 * C and C++ compilers
 * Java
